@@ -41,6 +41,10 @@ public class manager : MonoBehaviour {
         serializeOneRow();
         serializeOneRow();
         serializeOneRow();
+        serializeOneRow();
+        serializeOneRow();
+        serializeOneRow();
+
     }
 
     private void Update()
@@ -102,6 +106,20 @@ public class manager : MonoBehaviour {
         serializeOneRow();
     }
 
+    public void button(int number)
+    {
+        start = true;
+        Debug.Log("hit");
+        if (allRowData[0] == number)
+        {
+            hitRightBead();
+        }
+        else
+        {
+            failhit();
+        }
+    }
+
     void playerContorl()
     {
         if (inGameover)
@@ -111,53 +129,20 @@ public class manager : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            start = true;
-            Debug.Log("hit");
-            if (allRowData[0] == 0)
-            {
-                hitRightBead();
-            }
-            else
-            {
-                failhit();
-            }
+            button(0);
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
-            start = true;
-            if (allRowData[0] == 1)
-            {
-                hitRightBead();
-            }
-            else
-            {
-                failhit();
-            }
+            button(1);
         }
         if (Input.GetKeyDown(KeyCode.H))
         {
-            start = true;
-            if (allRowData[0] == 2)
-            {
-                hitRightBead();
-            }
-            else
-            {
-                failhit();
-            }
+            button(2);
         }
 
         if (Input.GetKeyDown(KeyCode.J))
         {
-            start = true;
-            if (allRowData[0] == 3)
-            {
-                hitRightBead();
-            }
-            else
-            {
-                failhit();
-            }
+            button(3);
         }
         canvaScript.Static.updateText(score, combo, gameStartTimeLeft);
     }

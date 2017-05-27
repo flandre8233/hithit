@@ -5,7 +5,7 @@ using UnityEngine;
 public class manager : MonoBehaviour {
     public static manager Static;
 
-    public GameObject beadObject;
+    public GameObject[] beadObjectArray;
     public int rowNumber;
     public int beadWidth;
     public List<int> allRowData;
@@ -109,7 +109,7 @@ public class manager : MonoBehaviour {
             return ;
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             start = true;
             Debug.Log("hit");
@@ -122,7 +122,7 @@ public class manager : MonoBehaviour {
                 failhit();
             }
         }
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.G))
         {
             start = true;
             if (allRowData[0] == 1)
@@ -134,10 +134,23 @@ public class manager : MonoBehaviour {
                 failhit();
             }
         }
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.H))
         {
             start = true;
             if (allRowData[0] == 2)
+            {
+                hitRightBead();
+            }
+            else
+            {
+                failhit();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            start = true;
+            if (allRowData[0] == 3)
             {
                 hitRightBead();
             }
@@ -164,9 +177,13 @@ public class manager : MonoBehaviour {
         int perBeadY = 1;
         int thisRowSpawnNumber = Random.Range(0,rowNumber);
         allRowData.Add(thisRowSpawnNumber);
-        Vector3 thisBeadVector3 = new Vector3(perBeadX * thisRowSpawnNumber,perBeadY*allRowData.Count-1,0);
+        Vector3 thisBeadVector3 = new Vector3( 0 + perBeadX * thisRowSpawnNumber,perBeadY*allRowData.Count-1,0);
 
-        allBeadArray.Add(Instantiate(beadObject, thisBeadVector3, Quaternion.identity ) );
+        //(Screen.width/2)
+        //Screen.height
+        GameObject go = Instantiate(beadObjectArray[thisRowSpawnNumber], thisBeadVector3, Quaternion.identity);
+        //go.
+        allBeadArray.Add(go);
         /*
         for (int i = 0; i < rowNumber; i++)
         {

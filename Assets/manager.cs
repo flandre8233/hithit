@@ -50,8 +50,19 @@ public class manager : MonoBehaviour {
     private void Update()
     {
         playerContorl();
-        gameStartTimer();
         resetKetboard();
+
+        switch (backgroundScript.Static.gameMode)
+        {
+            case "timeAttack":
+                gameStartTimer();
+                break;
+            case "infinite":
+                break;
+            default:
+                gameStartTimer();
+                break;
+        }
     }
 
     void resetKetboard()

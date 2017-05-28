@@ -172,6 +172,12 @@ public class manager : MonoBehaviour {
         int perBeadX = 5 / rowNumber;
         int perBeadY = 1;
         int thisRowSpawnNumber = Random.Range(0,rowNumber);
+        /*
+        while (allRowData.Count != 0 && thisRowSpawnNumber == allRowData[allRowData.Count-1])
+        {
+            thisRowSpawnNumber = Random.Range(0, rowNumber);
+        }
+        */
         allRowData.Add(thisRowSpawnNumber);
         Vector3 thisBeadVector3 = new Vector3( 0 + perBeadX * thisRowSpawnNumber,perBeadY*allRowData.Count-1,0);
 

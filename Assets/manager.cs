@@ -13,7 +13,12 @@ public class manager : MonoBehaviour {
 
     public int score = 0;
     public int combo = 0;
-    public float gameStartTimeLeft = 30;
+    float gameStartTimeLeft = 0;
+
+    int timeLeftMax = 0;
+
+    public AudioClip song;
+    public AudioSource songSource;
 
     public bool inGameover = false;
     public bool start = false;
@@ -45,6 +50,22 @@ public class manager : MonoBehaviour {
         serializeOneRow();
         serializeOneRow();
 
+        switch (backgroundScript.Static.gameMode)
+        {
+            case "timeAttack":
+                gameStartTimeLeft = 30;
+                timeLeftMax = (int)gameStartTimeLeft;
+                break;
+            case "infinite":
+                break;
+            case "songTimeAttck":
+                gameStartTimeLeft = 45;
+                timeLeftMax = (int)gameStartTimeLeft;
+                break;
+            default:
+                break;
+        }
+
     }
 
     private void Update()
@@ -58,6 +79,9 @@ public class manager : MonoBehaviour {
                 gameStartTimer();
                 break;
             case "infinite":
+                break;
+            case "songTimeAttck":
+                gameStartTimer();
                 break;
             default:
                 gameStartTimer();
@@ -105,11 +129,23 @@ public class manager : MonoBehaviour {
         }
     }
 
+    bool doOnce = false;
+
     void hitRightBead()
     {
+   
+        if (!doOnce && backgroundScript.Static.gameMode == "songTimeAttck")
+        {
+            doOnce = true;
+
+            //song play
+            songSource.Stop();
+            songSource.clip = song;
+            songSource.Play();
+        }
         combo++;
         //gameStartTimeLeft = 2;
-        score += (int)(combo * (1*(30 - gameStartTimeLeft)));
+        score += (int)(combo * (1*(timeLeftMax - gameStartTimeLeft)));
         allRowData.RemoveAt(0);
         Destroy(allBeadArray[0]);
         allBeadArray.RemoveAt(0);
@@ -181,10 +217,7 @@ public class manager : MonoBehaviour {
         allRowData.Add(thisRowSpawnNumber);
         Vector3 thisBeadVector3 = new Vector3( 0 + perBeadX * thisRowSpawnNumber,perBeadY*allRowData.Count-1,0);
 
-        //(Screen.width/2)
-        //Screen.height
         GameObject go = Instantiate(beadObjectArray[thisRowSpawnNumber], thisBeadVector3, Quaternion.identity);
-        //go.
         allBeadArray.Add(go);
         /*
         for (int i = 0; i < rowNumber; i++)

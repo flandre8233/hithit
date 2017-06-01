@@ -36,6 +36,10 @@ public class canvaScript : MonoBehaviour {
                 gameStartTimeLeft.gameObject.SetActive(false);
                 gameModeText.text = backgroundScript.Static.gameMode;
                 break;
+            case "songTimeAttck":
+                gameStartTimeLeft.gameObject.SetActive(true);
+                gameModeText.text = backgroundScript.Static.gameMode;
+                break;
             default:
                 gameStartTimeLeft.gameObject.SetActive(true);
                 gameModeText.text = "timeAttack";

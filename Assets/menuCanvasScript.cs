@@ -14,4 +14,9 @@ public class menuCanvasScript : MonoBehaviour {
         backgroundScript.Static.gameMode = "infinite";
         SceneManager.LoadScene("aa");
     }
+    public void SongTimeAttackButton()
+    {
+        backgroundScript.Static.gameMode = "songTimeAttck";
+        SceneManager.LoadScene("aa");
+    }
 }

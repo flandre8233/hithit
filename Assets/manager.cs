@@ -2,231 +2,106 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class manager : MonoBehaviour {
-    public static manager Static;
+public class manager : SingletonMonoBehavior<manager>
+{
+    [SerializeField] GameObject ScoreParticle;
+    [SerializeField] GameObject WrongPrefab;
+    int score = 0;
+    int combo = 0;
+    public TimeLeft timeLeft;
+    [SerializeField] MapControl MapControl;
 
-    public GameObject[] beadObjectArray;
-    public int rowNumber;
-    public int beadWidth;
-    public List<int> allRowData;
-    public List<GameObject> allBeadArray;
-
-    public int score = 0;
-    public int combo = 0;
-    float gameStartTimeLeft = 0;
-
-    int timeLeftMax = 0;
-
-    public AudioClip song;
-    public AudioSource songSource;
-
-    public bool inGameover = false;
-    public bool start = false;
-
-    private void Awake()
+    public void button(Vector2Int PlayerInputPos)
     {
-        if (Static != null)
+        if (MapControl.IsHitCorrectRow(PlayerInputPos))
         {
-            Destroy(this);
+            OnPLayerHitCorrectRaw(PlayerInputPos);
         }
         else
         {
-            Static = this;
+            OnHitWrongRow(PlayerInputPos);
         }
     }
 
-    // Use this for initialization
-    void Start ()
+    void OnPLayerHitCorrectRaw(Vector2Int PlayerInputPos)
     {
-        serializeOneRow();
-        serializeOneRow();
-        serializeOneRow();
-        serializeOneRow();
-        serializeOneRow();
-        serializeOneRow();
-        serializeOneRow();
-        serializeOneRow();
-        serializeOneRow();
-        serializeOneRow();
-        serializeOneRow();
+        Vector2Int NowTarget = MapControl.instance.GetNowTarget();
+        SpawnScoreParticle(NowTarget);
+        ComboAdd();
+        ScoreCount();
 
-        switch (backgroundScript.Static.gameMode)
+        MapControl.instance.GetBead(NowTarget.y).GetComponent<Crasher>().Crash();
+
+        for (int i = 0; i < PlayerInputPos.y + 1; i++)
         {
-            case "timeAttack":
-                gameStartTimeLeft = 30;
-                timeLeftMax = (int)gameStartTimeLeft;
-                break;
-            case "infinite":
-                break;
-            case "songTimeAttck":
-                gameStartTimeLeft = 45;
-                timeLeftMax = (int)gameStartTimeLeft;
-                break;
-            default:
-                break;
+            MapControl.FallOnce();
         }
 
+        BlockerControl.instance.DebuffJudge();
     }
 
-    private void Update()
-    {
-        playerContorl();
-        resetKetboard();
 
-        switch (backgroundScript.Static.gameMode)
+    void SpawnScoreParticle(Vector2Int PlayerInputPos)
+    {
+        for (int i = 0; i < 3; i++)
         {
-            case "timeAttack":
-                gameStartTimer();
-                break;
-            case "infinite":
-                break;
-            case "songTimeAttck":
-                gameStartTimer();
-                break;
-            default:
-                gameStartTimer();
-                break;
+            Instantiate(ScoreParticle, new Vector3(PlayerInputPos.x, PlayerInputPos.y, 0), Quaternion.identity);
         }
     }
 
-    void resetKetboard()
+    void OnHitWrongRow(Vector2Int PlayerInputPos)
     {
-        if (!inGameover)
+        ResourcesSpawner.Spawn("Wrong");
+        Instantiate(WrongPrefab, new Vector3(PlayerInputPos.x, PlayerInputPos.y), Quaternion.identity);
+        BlockerControl.instance.RemoveBlockers();
+        CameraShakeControll.instance.StartShake(0.3f);
+
+        if (MapControl.instance.allRowData[PlayerInputPos.y] <= -5)
         {
-            return;
+            MapControl.instance.GetBead(PlayerInputPos.y).GetComponent<DangerAniControl>().Exp();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (timeLeft)
         {
-            canvaScript.Static.resetButton();
+            Destroy(timeLeft.gameObject);
         }
-
+        OnTimeEnd();
     }
 
-    void gameStartTimer()
+    public void OnTimeEnd()
     {
-        if (!start || inGameover)
-        {
-            return;
-        }
-
-        if (gameStartTimeLeft >0)
-        {
-            gameStartTimeLeft -= Time.deltaTime;
-        }
-        else
-        {
-            gameStartTimeLeft = 0;
-            failhit();
-        }
+        Destroy(pointHit.instance);
+        BlockerControl.instance.CancelInvoke();
+        StatusControll.ToNewStatus(new GameoverStatus());
     }
 
-    void allRowFixPos()
+    void ComboAdd()
     {
-        foreach (var item in GameObject.FindGameObjectsWithTag("bead") )
-        {
-            item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y-1,0);
-        }
-    }
-
-    bool doOnce = false;
-
-    void hitRightBead()
-    {
-   
-        if (!doOnce && backgroundScript.Static.gameMode == "songTimeAttck")
-        {
-            doOnce = true;
-
-            //song play
-            songSource.Stop();
-            songSource.clip = song;
-            songSource.Play();
-        }
         combo++;
-        //gameStartTimeLeft = 2;
-        score += (int)(combo * (1*(timeLeftMax - gameStartTimeLeft)));
-        allRowData.RemoveAt(0);
-        Destroy(allBeadArray[0]);
-        allBeadArray.RemoveAt(0);
-        allRowFixPos();
-        serializeOneRow();
     }
-
-    public void button(int number)
+    void ScoreCount()
     {
-        start = true;
-        Debug.Log("hit");
-        if (allRowData[0] == number)
+        if (GameModeControl.instance.GetGameMode() == GameModeEnum.TimeAttack)
         {
-            hitRightBead();
-        }
-        else
-        {
-            failhit();
+            score += (int)((combo+1) * (1 * (timeLeft.GetMaxTime() - timeLeft.GetCurrentTimeLeft())));
         }
     }
 
-    void playerContorl()
+    public int GetScore()
     {
-        if (inGameover)
-        {
-            return ;
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            button(0);
-        }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            button(1);
-        }
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            button(2);
-        }
-
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            button(3);
-        }
-        canvaScript.Static.updateText(score, combo, gameStartTimeLeft);
+        return score;
     }
-
-    void failhit()
+    public int GetCombo()
     {
-        //gameStart = 0;
-        gameStartTimeLeft = 0;
-        canvaScript.Static.goGameover();
+        return combo;
     }
-
-
-
-    void serializeOneRow()
+    public float GetTimeLeft()
     {
-        int perBeadX = 5 / rowNumber;
-        int perBeadY = 1;
-        int thisRowSpawnNumber = Random.Range(0,rowNumber);
-        /*
-        while (allRowData.Count != 0 && thisRowSpawnNumber == allRowData[allRowData.Count-1])
+        if (timeLeft == null)
         {
-            thisRowSpawnNumber = Random.Range(0, rowNumber);
+            return 99.99f;
         }
-        */
-        allRowData.Add(thisRowSpawnNumber);
-        Vector3 thisBeadVector3 = new Vector3( 0 + perBeadX * thisRowSpawnNumber,perBeadY*allRowData.Count-1,0);
-
-        GameObject go = Instantiate(beadObjectArray[thisRowSpawnNumber], thisBeadVector3, Quaternion.identity);
-        allBeadArray.Add(go);
-        /*
-        for (int i = 0; i < rowNumber; i++)
-        {
-            Instantiate(beadObject, new Vector3(perBeadX*i,perBeadY,0) ,Quaternion.identity);
-        }
-        */
+        return timeLeft.GetCurrentTimeLeft();
     }
-
-    
 
 }

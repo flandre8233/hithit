@@ -2,31 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class pointHit : MonoBehaviour
+public class pointHit : SingletonMonoBehavior<pointHit>
 {
-    public LayerMask mask;
     void Update()
     {
-        if (manager.Static.inGameover)
+        if (Input.GetMouseButtonUp(0))
         {
-            return;
+            manager.instance.button(GridTheMousePoint());
         }
 
+    }
 
-        for (int i = 0; i < Input.touchCount; ++i)
+    Vector2Int GridTheMousePoint()
+    {
+        Vector3 MouseWorldPoint = Camera.main.ScreenToWorldPoint(GetMouseScreenPoint());
+        MouseWorldPoint = new Vector3(Mathf.Clamp(MouseWorldPoint.x ,0, Camera.main.pixelWidth) , Mathf.Clamp(MouseWorldPoint.y, 0 , Camera.main.pixelHeight) , MouseWorldPoint.z  );
+
+        Vector2 TargetMap = MapControl.instance.GetNowTarget();
+        if (Vector2.Distance(TargetMap, new Vector2(MouseWorldPoint.x, MouseWorldPoint.y)) <= .75f)
         {
-            if (Input.GetTouch(i).phase == TouchPhase.Began)
-            {
-                // Construct a ray from the current touch coordinates
-                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
-                // Create a particle if hit
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 100.0f, mask) && hit.collider.tag == "hitBlock")
-                {
-                    manager.Static.button(hit.collider.gameObject.GetComponent<hitblockClass>().hitNumber);
-                }
-            }
+            return MapControl.instance.GetNowTarget();
         }
+        return new Vector2Int(Mathf.RoundToInt(MouseWorldPoint.x), Mathf.RoundToInt(MouseWorldPoint.y));
+    }
 
+    Vector2 GetMouseScreenPoint()
+    {
+        return Input.mousePosition;
     }
 }

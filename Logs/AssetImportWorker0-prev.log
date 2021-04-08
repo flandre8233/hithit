@@ -1,0 +1,95 @@
+Using pre-set license
+
+ COMMAND LINE ARGUMENTS:
+/Applications/Unity/Hub/Editor/2020.3.1f1/Unity.app/Contents/MacOS/Unity
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+/Users/chihinchoy/git/hithit
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+65244
+Successfully changed project path to: /Users/chihinchoy/git/hithit
+/Users/chihinchoy/git/hithit
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 23.64 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.3.1f1 (77a89f25062f)
+[Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/2020.3.1f1/Unity.app/Contents/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /Users/chihinchoy/git/hithit/Assets
+GfxDevice: creating device client; threaded=0
+2021-04-07 15:23:15.720 Unity[15189:7388448] Color LCD preferred device: Intel(R) Iris(TM) Plus Graphics 655 (low power)
+2021-04-07 15:23:15.720 Unity[15189:7388448] Metal devices available: 1
+2021-04-07 15:23:15.720 Unity[15189:7388448] 0: Intel(R) Iris(TM) Plus Graphics 655 (low power)
+2021-04-07 15:23:15.720 Unity[15189:7388448] Using device Intel(R) Iris(TM) Plus Graphics 655 (low power)
+Initializing Metal device caps: Intel(R) Iris(TM) Plus Graphics 655
+Initialize mono
+Mono path[0] = '/Applications/Unity/Hub/Editor/2020.3.1f1/Unity.app/Contents/Managed'
+Mono path[1] = '/Applications/Unity/Hub/Editor/2020.3.1f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = '/Applications/Unity/Hub/Editor/2020.3.1f1/Unity.app/Contents/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56189
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /Applications/Unity/Hub/Editor/2020.3.1f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Registered in 0.000499 seconds.
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 22.60 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.358 seconds
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.000286 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 0.22 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.876 seconds
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launching external process: /Applications/Unity/Hub/Editor/2020.3.1f1/Unity.app/Contents/Tools/UnityShaderCompiler
+Launched and connected shader compiler UnityShaderCompiler after 0.01 seconds
+Refreshing native plugins compatible for Editor in 0.19 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1151 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 109.1 MB.
+System memory in use after: 109.2 MB.
+
+Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 1595.
+Total: 1.773624 ms (FindLiveObjects: 0.163594 ms CreateObjectMapping: 0.039647 ms MarkObjects: 1.499806 ms  DeleteObjects: 0.069601 ms)
+
+========================================================================
+Received Import Request.
+  path: Assets/x-30465_1280.png
+  artifactKey: Guid(5c13c1de8260547b08e35e1ea6d48a28) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/x-30465_1280.png using Guid(5c13c1de8260547b08e35e1ea6d48a28) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e03378f90a22521f108b9be0f1eeb936') in 1.182914 seconds
+  Import took 1.185576 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000280 seconds.
+  path: Assets/music.mp3
+  artifactKey: Guid(36c707615504bea4a93c84895c2e306d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/music.mp3 using Guid(36c707615504bea4a93c84895c2e306d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fee319558376fcdc951696cd989a2edd') in 1.268555 seconds
+  Import took 1.270380 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000283 seconds.
+  path: Assets/White.png
+  artifactKey: Guid(27c7ae184ff1248479158d9383101edd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/White.png using Guid(27c7ae184ff1248479158d9383101edd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '005a8198b2113c1eae2574e4cbd9f276') in 0.006789 seconds
+  Import took 0.008585 seconds .
+
